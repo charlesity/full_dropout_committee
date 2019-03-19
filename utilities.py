@@ -97,3 +97,30 @@ def model_instance(arg_param, C):
         model = net(input_shape=C.input_shape, output_shape=C.output_shape, batch_size=C.epoch_batch_size, n_epochs=C.nb_epoch, dropout = C.dropout
                     , dropout_type=None)
     return model
+
+def file_name(arg_param, C):
+    file_name =''
+    if arg_param.q_type == 1:
+        file_name = 'fp_qbdc_KL'
+    elif arg_param.q_type == 2:
+        file_name = 'fp_qbdc_jensen'
+    elif arg_param.q_type == 3:
+        file_name = 'qbdc'
+    elif arg_param.q_type == 4:
+        file_name = 'bald'
+    else:
+        file_name = 'Random'
+
+    if arg_param.dropout_type == 1:
+        file_name += "_"+'standard_dropout_'
+    elif arg_param.dropout_type == 2:
+        file_name += "_"+'batchwise_dropout_'
+    else:
+        file_name += "_"+'no_dropout_'
+
+    if arg_param.re_initialize_weights == 0:
+        file_name += 'weights_fine_tuning'
+    else:
+        file_name += 're_init_weights'
+
+    return file_name

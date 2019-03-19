@@ -19,6 +19,7 @@ from utilities import *
 
 import argparse
 
+
 start_time = time.time()
 parser = argparse.ArgumentParser()
 
@@ -26,7 +27,7 @@ parser.add_argument("q_type", type=int,
                     help="1 =fqbdc KL acquition, 2=fqbdc jensen acquition, 3 = qbdc acquition, 4 = bald acquition, else = random acquition")
 
 parser.add_argument("dropout_type", type=int,
-                    help="1 =standard, 2 = batchwise, query type")
+                    help="1 =standard, 2 = batchwise, 3= no dropout query type")
 
 parser.add_argument("re_initialize_weights", type=int,
                     help="determine whether or not weights should be re-initialized")
@@ -97,18 +98,15 @@ for train_index, un_labeled_index in sss.split(X_train,y_train):
         elif arg.q_type == 2:  # fully partial posterior query by dropout committee with jensen
             print ('fp_qbdc_jensen')
             index_maximum = committee_Jensen_divergence(model, unlabeled_X[subsampled_indices], C)
-
         elif arg.q_type == 3:  # query by dropout committee
             print ('qbdc')
             index_maximum = qbdc(model, unlabeled_X[subsampled_indices], C, active_train_X, active_train_y)
         elif arg.q_type == 4: #bald
             print('bald acquition')
             index_maximum=bald(model, unlabeled_X[subsampled_indices], C)
-
         else: #random
             print ('Random acquisition')
             index_maximum = np.random.uniform(0, subsampled_indices.shape[0], C.active_batch).astype(np.int)
-
 
         addition_samples_indices = subsampled_indices[index_maximum] # subset of the indices with the maximum information
 
@@ -158,12 +156,11 @@ all_val_acc /=C.num_experiments
 
 
 duration = time.time() - start_time
-print (duration)
-plt.plot(all_val_loss, label ='val_loss')
-plt.plot(all_training_loss, label ='training_loss')
-plt.legend()
-plt.figure()
-plt.plot(all_val_acc, label ='val_acc')
-plt.plot(all_training_acc, label='training_accuracy')
-plt.legend()
-plt.show()
+file = file_name(arg, C)
+
+location ='./results/'
+np.save(location+file+'_training_loss', all_training_loss)
+np.save(location+file+'_training_acc', all_training_acc)
+np.save(location+file+'_val_loss', all_val_loss)
+np.save(location+file+'_val_acc', all_val_acc)
+np.save(location+file+'_duraton', [duration] )
