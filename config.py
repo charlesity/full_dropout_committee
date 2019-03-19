@@ -5,8 +5,8 @@ class Config:
 
     def __init__(self):
         self.initial_training_ratio = .01
-        self.subsample_size = 100 #number of samples from which ranking will be done
-        self.active_batch = 50 #bumber of samples to query from the oracle
+        self.subsample_size = 200 #number of samples from which ranking will be done
+        self.active_batch = 100 #bumber of samples to query from the oracle
         self.number_of_committee = 20
         self.nb_epoch = 100
         self.epoch_batch_size = 32
