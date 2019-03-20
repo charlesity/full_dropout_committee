@@ -153,11 +153,10 @@ all_training_loss /=C.num_experiments
 all_training_acc /=C.num_experiments
 all_val_loss /=C.num_experiments
 all_val_acc /=C.num_experiments
-
+#
 
 duration = time.time() - start_time
 file = file_name(arg, C)
-
 location ='./results/'
 np.save(location+file+'_training_loss', all_training_loss)
 np.save(location+file+'_training_acc', all_training_acc)

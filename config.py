@@ -13,7 +13,7 @@ class Config:
         self.T = 50
         self.dropout = 0.5
         self.dropout_iterations = 50
-        self.num_experiments  = 5
+        self.num_experiments  = 3
         #both shapes set to initialy none until data is seen
         self.input_shape = None #
         self.output_shape =None #
